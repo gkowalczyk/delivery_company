@@ -14,7 +14,18 @@
         <module>delivery-administration</module>
     </modules>
 
+    <dependencies>
 
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>bom-module</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+
+    </dependencies>
     <profiles>
         <profile>
             <id>java-11</id>
