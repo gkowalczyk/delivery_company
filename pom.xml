@@ -9,12 +9,7 @@
     <name>delivery_company</name>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>delivery</module>
-        <module>delivery-administration</module>
-        <module>common-module</module>
-        <module>bom-module</module>
-    </modules>
+
 
 
     <profiles>

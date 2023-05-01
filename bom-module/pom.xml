@@ -11,6 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>bom-module</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
