@@ -8,6 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
 
 
+
     </parent>
     <groupId>com.example</groupId>
     <artifactId>delivery-administration</artifactId>
@@ -16,13 +17,18 @@
     <name>delivery-administration</name>
     <description>delivery-administration</description>
 
+    <modules>
+        <module>domain</module>
+        <module>infrastruture</module>
+        <module>application</module>
+    </modules>
+
     <dependencies>
 
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>bom-module</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-
             <type>pom</type>
             <scope>import</scope>
         </dependency>

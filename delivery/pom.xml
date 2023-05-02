@@ -16,6 +16,11 @@
     <name>delivery</name>
     <description>delivery</description>
     <packaging>pom</packaging>
+    <modules>
+        <module>domains</module>
+        <module>infrastructures</module>
+        <module>applications</module>
+    </modules>
     <dependencies>
 
         <dependency>

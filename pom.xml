@@ -13,7 +13,6 @@
         <module>delivery</module>
         <module>delivery-administration</module>
         <module>common-module</module>
-        <module>bom-module</module>
         <module>integration</module>
     </modules>
 
