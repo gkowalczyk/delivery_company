@@ -13,6 +13,8 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>common-module</name>
     <description>common-module</description>
+    <packaging>pom</packaging>
+
     <properties>
         <java.version>17</java.version>
     </properties>
