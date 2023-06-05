@@ -1,0 +1,251 @@
+openapi: 3.0.0
+info:
+  title: Delivery Management API
+  version: 1.0.0
+paths:
+  /api/orders:
+    post:
+      summary: Place a new order
+      operationId: placeOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  /api/orders/{orderId}:
+    get:
+      summary: Retrieve order details by order ID
+      operationId: getOrderById
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of the order to retrieve
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+    delete:
+      summary: Cancel an order by order ID
+      operationId: cancelOrderById
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of the order to cancel
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content
+  /api/customers/{customerId}/orders:
+    get:
+      summary: Retrieve order history for a specific user
+      operationId: getOrderHistoryByCustomerId
+      parameters:
+        - name: customerId
+          in: path
+          description: ID of the customer to retrieve order history for
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+
+
+
+
+  /api/customers:
+    get:
+      summary: Get a list of all customers
+      operationId: getAllCustomers
+      responses:
+       '200':
+        description: OK
+        content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Customer'
+    post:
+      summary: Add a new customer
+      operationId: addCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Customer created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+  /api/customers/{id}:
+    get:
+      summary: Get details of a specific customer
+      operationId: getCustomerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+    put:
+      summary: Update an existing customer
+      operationId: updateCustomer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+    delete:
+      summary: Delete a customer
+      operationId: deleteCustomer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+
+
+
+  /api/orders/{orderId}/tracking:
+
+
+    get:
+      summary: Retrieve real-time tracking information for an order
+      operationId: getTrackingInfo
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of the order to retrieve
+          required: true
+          schema:
+            type: integer
+      responses:
+
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Order'
+
+    put:
+      summary: Update the status and location of an order during delivery
+      operationId: updateTrackingInfo
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackingInfo'
+      responses:
+        '200':
+          description: OK
+          content:
+           application/json:
+             schema:
+              $ref: '#/components/schemas/Order'
+
+
+components:
+  schemas:
+    ExternalObjects:
+      $ref: '#/components/schemas/TrackingInfo'
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: integer
+        customerId:
+          type: integer
+        products:
+          type: array
+          items:
+            type: string
+        externalObjects:
+          $ref: '#/components/schemas/TrackingInfo'
+
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+
+
+    TrackingInfo:
+      type: object
+      properties:
+        status:
+          type: string
+        location:
+          type: string
+
+
+
+
+
+
