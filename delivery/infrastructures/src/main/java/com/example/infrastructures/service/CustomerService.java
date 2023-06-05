@@ -34,7 +34,7 @@ public class CustomerService {
     public List<Map<String, Object>> getAllCustomersByJdbc() {
 
         String sql = "SELECT * FROM Customers";
-       // System.out.println(jdbcTemplate.queryForList(sql, new Object[]{}));
+        System.out.println(jdbcTemplate.queryForList(sql, new Object[]{}));
         return jdbcTemplate.queryForList(sql, new Object[]{});
     }
 }
