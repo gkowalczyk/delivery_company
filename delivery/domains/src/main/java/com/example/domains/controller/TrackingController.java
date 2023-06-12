@@ -1,16 +1,27 @@
 package com.example.domains.controller;
 
 import com.delivery_company.openapi.api.ApiApi;
-import com.delivery_company.openapi.model.Order;
-import com.delivery_company.openapi.model.TrackingInfo;
+import com.delivery_company.openapi.model.TrackingInfoDto;
+import com.example.domains.mapper.OrderMapper;
+import com.example.domains.mapper.TrackingInfoMapper;
+import com.example.domains.service.TrackingInfoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("v1/tracking/")
 public class TrackingController implements ApiApi {
+
+    private final TrackingInfoService trackingInfoService;
+    private final TrackingInfoMapper trackingInfoMapper;
+    private final OrderMapper orderMapper;
+
+    public TrackingController(TrackingInfoService trackingInfoService, TrackingInfoMapper trackingInfoMapper, OrderMapper orderMapper) {
+        this.trackingInfoService = trackingInfoService;
+        this.trackingInfoMapper = trackingInfoMapper;
+        this.orderMapper = orderMapper;
+    }
 
     /**
      * GET /api/orders/{orderId}/tracking : Retrieve real-time tracking information for an order
@@ -19,39 +30,20 @@ public class TrackingController implements ApiApi {
      * @return OK (status code 200)
      */
     @Override
-    public ResponseEntity<Order> getTrackingInfo(@PathVariable("orderId") Integer orderId) {
-        Order order = new Order();
-        order.setOrderId(1);
-        TrackingInfo trackingInfo = new TrackingInfo();
-        trackingInfo.setStatus("in progress...");
-        trackingInfo.setLocation("Wrocław");
-        order.setExternalObjects(trackingInfo);
-        return ResponseEntity.ok(order);
-
+    public ResponseEntity<TrackingInfoDto> getTrackingInfo(@PathVariable("orderId") Integer orderId) {
+        return ResponseEntity.ok(trackingInfoMapper.trackingInfoDto(trackingInfoService.getTrackingInfo(orderId)));
     }
 
     /**
      * PUT /api/orders/{orderId}/tracking : Update the status and location of an order during delivery
      *
-     * @param orderId      (required)
-     * @param trackingInfo (required)
+     * @param orderId         (required)
+     * @param trackingInfoDto (required)
      * @return OK (status code 200)
      */
-
     @Override
-    public ResponseEntity<Order> updateTrackingInfo(@PathVariable("orderId") Integer orderId, @RequestBody TrackingInfo trackingInfo) {
-
-        Order order = new Order();
-        order.setOrderId(1);
-        List<Order> orderList = List.of(order);
-        Optional<Order> optionalOrder = Optional.of(orderList.stream().filter(o -> o.getOrderId() == orderId).findFirst().get());
-
-        TrackingInfo update = new TrackingInfo();
-        update.setLocation(trackingInfo.getLocation());
-        update.setStatus(trackingInfo.getStatus());
-
-        optionalOrder.get().setExternalObjects(update);
-        return ResponseEntity.ok(optionalOrder.get());
-
+    public ResponseEntity<TrackingInfoDto> updateTrackingInfo(@PathVariable("orderId") Integer orderId, @RequestBody TrackingInfoDto trackingInfoDto) {
+        return ResponseEntity.ok(trackingInfoMapper.trackingInfoDto(trackingInfoService.updateTrackingInfo(orderId,
+                trackingInfoMapper.trackingInfoToEntity(trackingInfoDto))));
     }
 }

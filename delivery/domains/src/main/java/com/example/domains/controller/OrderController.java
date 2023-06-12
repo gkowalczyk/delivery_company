@@ -1,16 +1,28 @@
 package com.example.domains.controller;
 
 import com.delivery_company.openapi.api.ApiApi;
-import com.delivery_company.openapi.model.Order;
+import com.delivery_company.openapi.model.OrderDto;
+import com.example.domains.domain.Order;
+import com.example.domains.mapper.OrderMapper;
+import com.example.domains.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("v1/order/")
 public class OrderController implements ApiApi {
+
+
+    private final OrderService orderService;
+    private final OrderMapper orderMapper;
+
+    public OrderController(OrderService orderService, OrderMapper orderMapper) {
+        this.orderService = orderService;
+        this.orderMapper = orderMapper;
+    }
 
     /**
      * GET /api/orders/{orderId} : Retrieve order details by order ID
@@ -20,14 +32,8 @@ public class OrderController implements ApiApi {
      */
 
     @Override
-    public ResponseEntity<Order> getOrderById(@PathVariable("orderId") Integer orderId) {
-
-        //example implementation
-        Order order = new Order();
-        order.setOrderId(orderId);
-        order.setCustomerId(1);
-        order.setProducts(List.of("Product1", "Product2"));
-        return ResponseEntity.ok(order);
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable("orderId") Integer orderId) {
+        return ResponseEntity.ok(orderMapper.orderToDto(orderService.getOrder(orderId)));
     }
 
     /**
@@ -38,27 +44,21 @@ public class OrderController implements ApiApi {
      */
     @Override
     public ResponseEntity<Void> cancelOrderById(@PathVariable("orderId") Integer orderId) {
-        //example implementation
-        List<Order> orderList = new ArrayList<>();
-        Order order = new Order();
-        order.setOrderId(1);
-        orderList.add(order);
-        orderList.removeIf(x -> x.getOrderId() == orderId);
+        orderService.deleteOrder(orderId);
         return ResponseEntity.ok().build();
     }
-
 
     /**
      * POST /api/orders : Place a new order
      *
-     * @param order (required)
+     * @param orderDto (required)
      * @return OK (status code 200)
      */
     @Override
-    public ResponseEntity<Order> placeOrder(@RequestBody Order order) {
-
-        //example implementation
-        return ResponseEntity.ok(order);
+    public ResponseEntity<OrderDto> placeOrder(@RequestBody OrderDto orderDto) {
+        Order newOrder = orderMapper.orderToEntity(orderDto);
+        orderService.addOrder(newOrder);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -68,21 +68,9 @@ public class OrderController implements ApiApi {
      * @return OK (status code 200)
      */
     @Override
-    public ResponseEntity<List<Order>> getOrderHistoryByCustomerId(@PathVariable("customerId") Integer customerId) {
-
-        //example implementation
-        Order order = new Order();
-        Order order1 = new Order();
-        order.setOrderId(1);
-        order.setCustomerId(1);
-        order1.setOrderId(2);
-        order1.setCustomerId(1);
-        order.setProducts(List.of("Product1"));
-        order1.setProducts(List.of("Product2"));
-        List<Order> orderList = new ArrayList<>();
-        orderList.add(order);
-        orderList.add(order1);
-        return ResponseEntity.ok(orderList.stream().filter(x -> x.getCustomerId() == customerId).collect(Collectors.toList()));
-
+    public ResponseEntity<List<OrderDto>> getOrderHistoryByCustomerId(@PathVariable("customerId") Integer customerId) {
+        return ResponseEntity.ok(orderService.getTrackingInfo(customerId)
+                .stream().map(orderMapper::orderToDto)
+                .collect(Collectors.toList()));
     }
 }

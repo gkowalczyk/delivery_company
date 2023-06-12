@@ -3,16 +3,19 @@ package com.example.domains.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Customer {
+public class Product {
 
     @Id
     @GeneratedValue
     private Integer id;
     private String name;
+    @ManyToOne
+    private Order order;
 
-    public Customer() {
+    public Product() {
     }
 
     public Integer getId() {
@@ -31,3 +34,4 @@ public class Customer {
         this.name = name;
     }
 }
+

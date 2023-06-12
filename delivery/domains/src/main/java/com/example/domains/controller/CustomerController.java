@@ -1,19 +1,29 @@
 package com.example.domains.controller;
 
+
 import com.delivery_company.openapi.api.ApiApi;
-import com.delivery_company.openapi.model.Customer;
-import org.springframework.http.HttpStatus;
+import com.delivery_company.openapi.model.CustomerDto;
+import com.example.domains.domain.Customer;
+import com.example.domains.mapper.CustomerMapper;
+import com.example.domains.service.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("v1/customer/")
+@RequestMapping("v1/customers/")
+
 public class CustomerController implements ApiApi {
+
+    private final CustomerService customerService;
+    private final CustomerMapper customerMapper;
+
+    public CustomerController(CustomerService customerService, CustomerMapper customerMapper) {
+        this.customerService = customerService;
+        this.customerMapper = customerMapper;
+    }
 
     /**
      * GET /api/customers : Get a list of all customers
@@ -21,18 +31,10 @@ public class CustomerController implements ApiApi {
      * @return OK (status code 200)
      */
     @Override
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-
-        //example implementation
-        Customer customer = new Customer();
-        Customer customer1 = new Customer();
-        customer.setId(1);
-        customer1.setId(2);
-        customer.setName("Customer1");
-        customer1.setName("Customer2");
-        List<Customer> customers = List.of(customer1, customer);
-
-        return ResponseEntity.ok(customers);
+    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
+        return ResponseEntity.ok(customerService.getAllCustomers()
+                .stream().map(customerMapper::customerToDto)
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -41,54 +43,43 @@ public class CustomerController implements ApiApi {
      * @param id (required)
      * @return OK (status code 200)
      */
+
     @Override
-    public ResponseEntity<Customer> getCustomerById(@PathVariable("id") Integer id) {
-
-        //example implementation
-        Customer customer = new Customer();
-        customer.setId(id);
-        customer.setName("Customer1");
-
-        return ResponseEntity.ok(customer);
+    public ResponseEntity<CustomerDto> getCustomerById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(customerMapper.customerToDto(customerService.getCustomer(id)));
     }
 
     /**
      * POST /api/customers : Add a new customer
      *
-     * @param customer (required)
+     * @param customerDto (required)
      * @return OK (status code 200)
      */
-
     @Override
-    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
-        //example implementation
-        return ResponseEntity.ok(customer);
+    public ResponseEntity<CustomerDto> addCustomer(@RequestBody CustomerDto customerDto) {
+        Customer newCustomer = customerMapper.customerToEntity(customerDto);
+        customerService.addCustomer(newCustomer);
+        return ResponseEntity.ok().build();
     }
 
     /**
      * PUT /api/customers/{id} : Update an existing customer
      *
-     * @param id       (required)
-     * @param customer (required)
+     * @param id          (required)
+     * @param customerDto (required)
+     * @param id          (required)
+     * @return OK (status code 200)
+     * <p>
+     * DELETE /api/customers/{id} : Delete a customer
      * @return OK (status code 200)
      */
-
     @Override
-    public ResponseEntity<Customer> updateCustomer(@PathVariable("id") Integer id, @RequestBody Customer customer) {
-        //example implementation
-        Customer fromDB = new Customer();
-        fromDB.setName("Customer");
-        fromDB.setId(1);
+    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable("id") Integer id, @RequestBody CustomerDto customerDto) {
 
-        List<Customer> customerList = List.of(fromDB);
-        Optional<Customer> customerOptional = Optional.of(customerList.stream().filter(c -> c.getId() == id).findAny().get());
-        customerOptional.get().setName(customer.getName());
-        customerOptional.get().setId(customer.getId());
-
-        return ResponseEntity.ok(customerOptional.get());
-
+        Customer oldCustomer = customerMapper.customerToEntity(customerDto);
+        Customer saveCustomer = customerService.updateCustomer(id, oldCustomer);
+        return ResponseEntity.ok(customerMapper.customerToDto(saveCustomer));
     }
-
 
     /**
      * DELETE /api/customers/{id} : Delete a customer
@@ -98,21 +89,8 @@ public class CustomerController implements ApiApi {
      */
     @Override
     public ResponseEntity<Void> deleteCustomer(@PathVariable("id") Integer id) {
-        //example implementation
-        List<Customer> customerList = new ArrayList<>();
-        Customer customer = new Customer();
-        customer.setId(1);
-        customer.setName("Customer");
-        customerList.add(customer);
-        System.out.println(customerList);
-
-        Iterator<Customer> customerIterator = customerList.stream()
-                .filter(c -> c.getId().equals(id))
-                .iterator();
-        while (customerIterator.hasNext()) {
-            Customer customers = customerIterator.next();
-            customerList.remove(customers);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        customerService.deleteCustomerById(id);
+        return ResponseEntity.ok().build();
     }
 }
+
