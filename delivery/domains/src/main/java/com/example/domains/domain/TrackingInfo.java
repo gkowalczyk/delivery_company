@@ -1,17 +1,16 @@
 package com.example.domains.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class TrackingInfo {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String location;
     private String status;
+    private String location;
+
 
     public TrackingInfo() {
     }

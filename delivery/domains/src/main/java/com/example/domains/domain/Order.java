@@ -9,7 +9,7 @@ import java.util.List;
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer customerId;
     @OneToMany(targetEntity = Product.class,
@@ -18,6 +18,7 @@ public class Order {
             fetch = FetchType.LAZY
     )
     private List<Product> products;
+
     @OneToOne
     private TrackingInfo trackingInfo;
 
