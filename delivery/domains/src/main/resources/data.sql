@@ -3,4 +3,9 @@
 INSERT INTO CUSTOMER (name)
 VALUES('CUSTOMER1');
 
+INSERT INTO TRACKING_INFO (location, status)
+VALUES( 'LOCATION1', 'IN PROGRESS');
+
+INSERT INTO ORDERS (customer_id, tracking_info_id)
+VALUES( 1, 1);
 

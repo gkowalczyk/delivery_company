@@ -214,7 +214,7 @@ components:
     OrderDto:
       type: object
       properties:
-        orderId:
+        id:
           type: integer
         customerId:
           type: integer

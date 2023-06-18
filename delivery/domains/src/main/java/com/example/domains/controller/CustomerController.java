@@ -25,10 +25,7 @@ public class CustomerController implements ApiApi {
         this.customerMapper = customerMapper;
     }
 
-    @RequestMapping("/")
-    public @ResponseBody String greeting() {
-        return "Hello, World";
-    }
+
     /**
      * GET /api/customers : Get a list of all customers
      *

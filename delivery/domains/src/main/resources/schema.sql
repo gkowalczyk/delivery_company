@@ -6,3 +6,16 @@ CREATE TABLE CUSTOMER
     name VARCHAR(255)
 );
 
+CREATE TABLE TRACKING_INFO
+(
+    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    status VARCHAR(255),
+    location VARCHAR(255)
+);
+
+CREATE TABLE ORDERS
+(
+    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    tracking_info_id INT
+);
