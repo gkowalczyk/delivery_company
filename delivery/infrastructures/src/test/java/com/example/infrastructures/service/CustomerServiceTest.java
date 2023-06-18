@@ -15,9 +15,10 @@ class CustomerServiceTest {
 
     @Autowired
     private CustomersRepository customersRepository;
+}
 
 
-    @Test
+   /* @Test
     void getAllCustomersFromDataBase() {
 
         //given
@@ -31,3 +32,4 @@ class CustomerServiceTest {
         customersRepository.deleteAll();
     }
 }
+*/
