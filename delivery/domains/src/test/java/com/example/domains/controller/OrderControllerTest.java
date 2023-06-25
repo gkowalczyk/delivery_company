@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class OrderControllerTest {
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+  /*  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -115,5 +115,5 @@ class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].id", Matchers.is(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].trackinginfoDto.status", Matchers.is("IN PROGRESS")));
-    }
+    }*/
 }

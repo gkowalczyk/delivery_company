@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("v1/customers/")
+@RequestMapping("/v1/customers")
 
 public class CustomerController implements ApiApi {
 
@@ -32,6 +32,7 @@ public class CustomerController implements ApiApi {
      * @return OK (status code 200)
      */
     @Override
+
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
         return ResponseEntity.ok(customerService.getAllCustomers()
                 .stream().map(customerMapper::customerToDto)

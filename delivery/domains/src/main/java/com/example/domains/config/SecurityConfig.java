@@ -14,9 +14,10 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @EnableWebSecurity
 class SecurityConfig {
 
+
     private final KeycloakLogoutHandler keycloakLogoutHandler;
 
-    SecurityConfig(KeycloakLogoutHandler keycloakLogoutHandler) {
+    public SecurityConfig(KeycloakLogoutHandler keycloakLogoutHandler) {
         this.keycloakLogoutHandler = keycloakLogoutHandler;
     }
 
@@ -27,12 +28,18 @@ class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
+        http.csrf().disable();
+        http.cors().disable();
+        http.authorizeHttpRequests((requests) -> requests
 
-                .antMatchers("v1/customers*")
-                .hasRole("USER")
+                .requestMatchers("/v1/customers/api/customers")
+                .hasAnyRole("USER")
+                .requestMatchers("/v1/order/api/customers/{customerId}/orders")
+                .hasAnyRole("ADMIN")
                 .anyRequest()
-                .permitAll();
+                .permitAll());
+
+
         http.oauth2Login()
                 .and()
                 .logout()

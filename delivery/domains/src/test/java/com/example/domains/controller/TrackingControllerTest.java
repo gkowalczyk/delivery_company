@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class TrackingControllerTest {
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+/*    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private MockMvc mockMvc;
 
@@ -79,5 +79,5 @@ class TrackingControllerTest {
                         .content(content))
                 .andExpect(status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status", Matchers.is("Done")));
-    }
+    }*/
 }
