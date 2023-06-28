@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("v1/order/")
+@RequestMapping("/v1/order/")
 public class OrderController implements ApiApi {
 
 

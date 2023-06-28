@@ -7,6 +7,7 @@ import com.example.domains.domain.Customer;
 import com.example.domains.mapper.CustomerMapper;
 import com.example.domains.service.CustomerService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +33,7 @@ public class CustomerController implements ApiApi {
      * @return OK (status code 200)
      */
     @Override
-
-    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
+       public ResponseEntity<List<CustomerDto>> getAllCustomers() {
         return ResponseEntity.ok(customerService.getAllCustomers()
                 .stream().map(customerMapper::customerToDto)
                 .collect(Collectors.toList()));
