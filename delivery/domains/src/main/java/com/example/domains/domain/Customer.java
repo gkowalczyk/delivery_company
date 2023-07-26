@@ -12,6 +12,7 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    private String mail;
 
     public Customer() {
     }
@@ -30,5 +31,13 @@ public class Customer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 }

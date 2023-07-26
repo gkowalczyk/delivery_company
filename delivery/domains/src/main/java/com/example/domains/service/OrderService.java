@@ -7,8 +7,10 @@ import com.example.domains.repository.TrackingInfoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,4 +41,13 @@ public class OrderService {
                 .filter(x -> x.getCustomerId() == id)
                 .collect(Collectors.toList());
     }
+    public List<Order> sendReportToQueue(Integer id, LocalDate start, LocalDate end) {
+        return orderRepository.findAll().stream()
+
+                .filter(customer -> Objects.equals(customer.getCustomerId(), id))
+                .filter(order -> order.getDate().isAfter(start.minusDays(1)) && order.getDate().isBefore(end.plusDays(1)))
+                .collect(Collectors.toList());
+    }
+
+
 }

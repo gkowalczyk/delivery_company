@@ -1,0 +1,4 @@
+id,customer_id,tracking_info_id,order_date
+1,1,1,2023-07-10
+2,1,1,2023-07-11
+2,1,1,2023-07-11

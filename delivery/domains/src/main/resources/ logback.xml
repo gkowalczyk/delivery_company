@@ -1,0 +1,7 @@
+<configuration>
+    <!-- ... inne ustawienia loggera ... -->
+
+    <logger name="com.example.domains.controller.ProduceMessageController" level="INFO" />
+
+    <!-- ... inne ustawienia loggera ... -->
+</configuration>

@@ -3,7 +3,8 @@
 CREATE TABLE CUSTOMER
 (
     id   BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255)
+    name VARCHAR(255),
+    mail VARCHAR(255)
 );
 
 CREATE TABLE TRACKING_INFO
@@ -17,5 +18,6 @@ CREATE TABLE ORDERS
 (
     id   BIGINT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT,
-    tracking_info_id INT
+    tracking_info_id INT,
+    order_date DATE
 );
