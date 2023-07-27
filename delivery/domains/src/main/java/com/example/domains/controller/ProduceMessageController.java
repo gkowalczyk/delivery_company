@@ -70,11 +70,10 @@ public class ProduceMessageController {
 
     @GetMapping("/{customerId}/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable Integer customerId, @PathVariable String fileName, HttpServletRequest request) throws IOException {
-
+        databaseToCsvHandler.exportDataToCsv(customerId);
         String contentType = null;
         Resource resource = fileStorageService.loadFileAsResource(fileName);
         try {
-            databaseToCsvHandler.exportDataToCsv(customerId);
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
             emailService.sendToCustomer(customerId, fileName);
         } catch (MyFileNotFoundException myFileNotFoundException) {
