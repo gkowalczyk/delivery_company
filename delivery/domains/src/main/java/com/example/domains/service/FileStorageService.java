@@ -11,7 +11,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Path;
 
 @Service
-public class  *FileStorageService {
+public class FileStorageService {
 
     @Value("${file.upload-dir}")
     private final Path fileStorageLocation;
@@ -20,7 +20,7 @@ public class  *FileStorageService {
         this.fileStorageLocation = fileStorageLocation;
     }
 
-    public Resource loadFileAsResource(String fileName) throws IOException {
+    public Resource loadFileAsResource(String fileName)  {
 
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
@@ -31,7 +31,7 @@ public class  *FileStorageService {
                 throw new MyFileNotFoundException("File not found " + fileName);
             }
         } catch (MalformedURLException malformedURLException) {
-            throw new IOException();
+            throw new MyFileNotFoundException("File not found " + fileName, malformedURLException);
         }
     }
 }
