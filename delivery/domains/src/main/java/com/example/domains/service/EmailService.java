@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import static java.util.Optional.ofNullable;
 
-@Slf4j
-@Service
 
+@Service
 public class EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
@@ -21,12 +20,13 @@ public class EmailService {
     private final CustomerService customerService;
     private final static String MAIL_MESSAGE = "Link to download file with history order for customer id:";
 
+
     public EmailService(JavaMailSender javaMailSender, CustomerService customerService) {
         this.javaMailSender = javaMailSender;
         this.customerService = customerService;
     }
 
-    public void send(final Mail mail) {
+    public void simpleMailMessageSender (final Mail mail) {
         logger.info("\"Starting email preparation....");
         try {
             SimpleMailMessage simpleMailMessage = createMailMassage(mail);
@@ -50,6 +50,6 @@ public class EmailService {
         String message = MAIL_MESSAGE + customerId + ":" + fileUrl;
         String customer = customerService.getCustomer(customerId).getMail();
         ofNullable(customer).ifPresent(consumer ->
-                send(new Mail(message, consumer)));
+                simpleMailMessageSender(new Mail(message, customer)));
     }
 }

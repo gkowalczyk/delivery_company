@@ -1,6 +1,7 @@
 package com.example.domains.service;
 
 import com.example.domains.domain.Order;
+import com.example.domains.exception.MyFileNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -42,8 +43,8 @@ public class DatabaseToCsvHandler {
                             + TRACKING_INFO_LOCATION + order.getTrackingInfo().getLocation()
                             + "\n" + TRACKING_INFO_STATUS + order.getTrackingInfo().getStatus(), "\n"
                             + ORDER_DATE + order.getDate());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException ioException) {
+                   throw new MyFileNotFoundException("File couldn't be printed" + ioException.getMessage());
                 }
             }
         }

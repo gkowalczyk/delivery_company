@@ -10,6 +10,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.jms.Queue;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +22,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Data
 @RestController
 @RequestMapping("v1/jms")
-@Slf4j
 public class ProduceMessageController {
     private static final Logger logger = LoggerFactory.getLogger(ProduceMessageController.class);
     private final OrderService orderService;
@@ -69,6 +73,7 @@ public class ProduceMessageController {
     }
 
     @GetMapping("/{customerId}/downloadFile/{fileName:.+}")
+    @Transactional
     public ResponseEntity<Resource> downloadFile(@PathVariable Integer customerId, @PathVariable String fileName, HttpServletRequest request) throws IOException {
         databaseToCsvHandler.exportDataToCsv(customerId);
         String contentType = null;
